@@ -1,27 +1,32 @@
-import java.util.ArrayList;
-import java.util.List;
+class Solution {
 
-public class Solution {
-    List<List<Integer>> ans = new ArrayList<>();
+    void fun(List<Integer> input,List<Integer> output,List<List<Integer>> ans){
+        ans.add(new ArrayList<>(output));
 
-    public List<List<Integer>> subsets(int[] nums) {
-        List<Integer> ip = new ArrayList<>();
-        for (int num : nums) {
-            ip.add(num);
+        if(input.size()==0) return;
+
+        for(int i=0;i<input.size();i++){
+            List<Integer> ip=new ArrayList<>(input);
+            List<Integer> op=new ArrayList<>(output);
+
+            op.add(ip.get(i));
+            ip.subList(0,i+1).clear();
+
+            fun(ip,op,ans);
         }
-        fun(ip, new ArrayList<>());
-        return ans;
     }
 
-    public void fun(List<Integer> ip, List<Integer> op) {
-        ans.add(new ArrayList<>(op));
-        
-        for (int i = 0; i < ip.size(); i++) {
-            List<Integer> newIp = new ArrayList<>(ip);
-            List<Integer> newOp = new ArrayList<>(op);
-            newOp.add(ip.get(i));
-            newIp.subList(0, i + 1).clear();
-            fun(newIp, newOp);
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> ans=new ArrayList<>();
+        List<Integer> input=new ArrayList<>();
+        List<Integer> output=new ArrayList<>();
+
+        for(int a:nums){
+            input.add(a);
         }
+
+        fun(input,output,ans);
+
+        return ans;
     }
 }
