@@ -1,21 +1,27 @@
-class Solution {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Solution {
+    List<List<Integer>> ans = new ArrayList<>();
+
     public List<List<Integer>> subsets(int[] nums) {
-        List<List<Integer>> res= new ArrayList<>();
-        sets("", nums, 0, res);
-        return res;
-    }
-    private static void sets(String ans, int[] nums, int idx, List<List<Integer>> res){
-        if (idx==nums.length){
-            List<Integer> list = new ArrayList<>();
-            if (!ans.isEmpty()) {
-                for (String s : ans.split(" ")) {
-                    list.add(Integer.parseInt(s));
-                }
-            }
-            res.add(list);
-            return;
+        List<Integer> ip = new ArrayList<>();
+        for (int num : nums) {
+            ip.add(num);
         }
-        sets(ans+nums[idx]+ " ", nums, idx+1, res);
-        sets(ans, nums, idx+1, res);
+        fun(ip, new ArrayList<>());
+        return ans;
+    }
+
+    public void fun(List<Integer> ip, List<Integer> op) {
+        ans.add(new ArrayList<>(op));
+        
+        for (int i = 0; i < ip.size(); i++) {
+            List<Integer> newIp = new ArrayList<>(ip);
+            List<Integer> newOp = new ArrayList<>(op);
+            newOp.add(ip.get(i));
+            newIp.subList(0, i + 1).clear();
+            fun(newIp, newOp);
+        }
     }
 }
