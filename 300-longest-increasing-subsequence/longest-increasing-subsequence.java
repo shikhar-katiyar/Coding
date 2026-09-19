@@ -1,19 +1,21 @@
+import java.util.*;
+
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        int[][] memo= new int[nums.length][nums.length+1];
-        for (int[] row:memo) {
-            Arrays.fill(row, -1);
+        ArrayList<Integer> temp = new ArrayList<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            if (temp.size() == 0 || nums[i] > temp.get(temp.size() - 1)) {
+                temp.add(nums[i]);
+            } else {
+                int p = 0;
+                while (temp.get(p) < nums[i]) {
+                    p++;
+                }
+                temp.set(p, nums[i]);
+            }
         }
-        return f(nums, 0, -1, memo);
-    }
-    public int f(int[] nums, int i, int p, int[][] memo) {
-        if (i>=nums.length) return 0;
-        if (memo[i][p+1]!=-1) return memo[i][p+1];
-        int a=0;
-        if (p==-1 || nums[i]>nums[p]){
-            a=1+f(nums,i+1, i, memo);
-        }
-        int b= f(nums, i+1, p, memo);
-        return memo[i][p+1]=Math.max(a, b);
+
+        return temp.size();
     }
 }
